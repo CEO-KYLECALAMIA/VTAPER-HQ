@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V-Taper HQ</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080a0e;
+  --surface: #0f1218;
+  --card: #13171f;
+  --card2: #181d27;
+  --border: #1e2535;
+  --border2: #252d3e;
+  --accent: #00e5ff;
+  --accent2: #ff6b00;
+  --green: #00e676;
+  --red: #ff4444;
+  --yellow: #ffd600;
+  --push: #448aff;
+  --pull: #ce93d8;
+  --legs: #69f0ae;
+  --text: #e8ecf4;
+  --muted: #4a5568;
+  --muted2: #6b7a99;
+  --warn: #ff6b00;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(8,10,14,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  padding: 0 16px;
+}
+
+.nav-btn {
+  flex: 1;
+  padding: 14px 4px 12px;
+  background: none;
+  border: none;
+  color: var(--muted2);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.nav-btn .nav-icon { font-size: 1.1rem; }
+.nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ─── SCREENS ─── */
+.screen { display: none; padding: 0 0 80px; }
+.screen.active { display: block; }
+
+/* ─── HERO STRIP ─── */
+.hero {
+  background: linear-gradient(135deg, #0a1628 0%, #080a0e 60%);
+  border-bottom: 1px solid var(--border);
+  padding: 22px 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1;
+  color: var(--text);
+}
+
+.hero-title span { color: var(--accent); }
+
+.hero-sub {
+  font-size: 0.72rem;
+  color: var(--muted2);
+  margin-top: 5px;
+  letter-spacing: 0.3px;
+}
+
+/* ─── STATS ROW ─── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 16px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 12px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+}
+
+.stat-card.c1::after { background: var(--accent); }
+.stat-card.c2::after { background: var(--accent2); }
+.stat-card.c3::after { background: var(--green); }
+
+.stat-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-card.c1 .stat-val { color: var(--accent); }
+.stat-card.c2 .stat-val { color: var(--accent2); }
+.stat-card.c3 .stat-val { color: var(--green); }
+
+.stat-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted2);
+  margin-top: 3px;
+}
+
+/* ─── SECTION HEADS ─── */
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  margin: 8px 0 10px;
+}
+
+.sec-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+
+.sec-badge {
+  font-size: 0.6rem;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.badge-cut { background: rgba(255,107,0,0.15); color: var(--accent2); border: 1px solid rgba(255,107,0,0.3); }
+.badge-build { background: rgba(0,229,255,0.1); color: var(--accent); border: 1px solid rgba(0,229,255,0.2); }
+.badge-warn { background: rgba(255,107,0,0.12); color: var(--warn); border: 1px solid rgba(255,107,0,0.25); }
+
+/* ─── RECOMP CARD ─── */
+.recomp-card {
+  margin: 0 16px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.recomp-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+}
+
+.recomp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.recomp-row:last-child { border-bottom: none; padding-bottom: 0; }
+.recomp-row:first-child { padding-top: 0; }
+
+.recomp-key {
+  font-size: 0.75rem;
+  color: var(--muted2);
+  letter-spacing: 0.3px;
+}
+
+.recomp-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.recomp-val.highlight { color: var(--accent); }
+.recomp-val.warn { color: var(--accent2); }
+.recomp-val.good { color: var(--green); }
+
+/* ─── MACRO RING ─── */
+.macro-wrap {
+  margin: 0 16px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+< truncated lines 256-1518 >
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ TIPS SCREEN ═══════════════════ -->
+<div class="screen" id="screen-tips">
+
+  <div class="tips-hero">
+    <div class="tips-hero-label">Belly Fat & Love Handles</div>
+    <div class="tips-hero-title">THE <span>CUT</span></div>
+    <div class="hero-sub">Evidence-based strategies for your specific goal</div>
+  </div>
+
+  <div style="height:16px;"></div>
+
+  <div class="sec-head">
+    <div class="sec-title">Nutrition Rules</div>
+    <div class="sec-badge badge-cut">Non-Negotiable</div>
+  </div>
+
+  <div class="tip-card t1">
+    <div class="tip-label">🥩 Rule #1 · Protein</div>
+    <div class="tip-title">Hit 185–200g Protein Every Single Day</div>
+    <div class="tip-body">This is the most important lever. At 198 lbs cutting, you need ~1g per lb of bodyweight to preserve the muscle you've built. Chicken, eggs, Greek yogurt, cottage cheese, whey. Every meal should have a protein anchor. This alone will protect your gains while the fat comes off.</div>
+  </div>
+
+  <div class="tip-card t2">
+    <div class="tip-label">📉 Rule #2 · Deficit</div>
+    <div class="tip-title">Stay at 2,300–2,450 Calories. No Crash Dieting.</div>
+    <div class="tip-body">You have decent muscle — crash dieting will eat it. A 350–500 cal daily deficit is the sweet spot. You'll lose fat without sacrificing strength or triggering cortisol spikes (which hold belly fat). Weigh yourself each morning after bathroom, track weekly averages — not daily fluctuations.</div>
+  </div>
+
+  <div class="tip-card t3">
+    <div class="tip-label">⏰ Rule #3 · Meal Timing</div>
+    <div class="tip-title">Front-Load Carbs Around Training</div>
+    <div class="tip-body">Eat your biggest carb meals before and after your workout. This fuels performance and muscle glycogen without storing as fat. Keep evenings protein + vegetables + small fat. The love handles respond well to lower-carb evenings.</div>
+  </div>
+
+  <div class="tip-card t4">
+    <div class="tip-label">💧 Rule #4 · Water & Sodium</div>
+    <div class="tip-title">Drink 1 Gallon of Water Daily</div>
+    <div class="tip-body">Cortisol, poor sleep, and high sodium make belly fat stubborn. Stay hydrated — 3.5–4L daily. This reduces water retention around the midsection and keeps metabolism optimised. Monitor processed food sodium, which bloats the waist.</div>
+  </div>
+
+  <div style="height:6px;"></div>
+  <div class="sec-head">
+    <div class="sec-title">Training Additions</div>
+    <div class="sec-badge badge-build">For Fat Loss</div>
+  </div>
+
+  <div class="tip-card t5">
+    <div class="tip-label">🚶 Add · LISS Cardio</div>
+    <div class="tip-title">3–4x/Week: 30–40 Min Walking or Low-Impact Cardio</div>
+    <div class="tip-body">Do NOT do high-impact cardio — running on concrete with scoliosis and hip issues risks worsening asymmetry and joint load. Instead: incline treadmill walks, cycling, elliptical. These burn 250–350 extra calories with zero muscle breakdown and are spine-friendly. This accelerates your fat loss without touching your strength work.</div>
+  </div>
+
+  <div class="tip-card t1">
+    <div class="tip-label">🧘 Add · Core Stability</div>
+    <div class="tip-title">Dead Bugs, Bird Dogs, Pallof Press — Not Crunches</div>
+    <div class="tip-body">Standard crunches and sit-ups are problematic with scoliosis — they can exacerbate the spinal curve and load the hip asymmetrically. Instead: Dead bugs (anti-extension), Bird dogs (anti-rotation), Pallof press (anti-rotation). These build real core stability that supports your compound lifts AND helps correct your scoliosis imbalances. 2–3x/week, 2–3 sets each.</div>
+  </div>
+
+  <div class="tip-card t2">
+    <div class="tip-label">😴 Recovery</div>
+    <div class="tip-title">7–9 Hours Sleep Is Part of Your Fat Loss Plan</div>
+    <div class="tip-body">Poor sleep raises cortisol, which directly causes visceral fat retention — especially belly fat and love handles. If you sleep 5–6 hours, even a perfect diet won't fully strip that fat. Prioritise sleep like it's a workout. This isn't optional for your goal.</div>
+  </div>
+
+  <div style="height:6px;"></div>
+  <div class="sec-head">
+    <div class="sec-title">Scoliosis-Specific</div>
+    <div class="sec-badge badge-warn">⚠ Your Situation</div>
+  </div>
+
+  <div class="tip-card t3">
+    <div class="tip-label">⚠️ Important</div>
+    <div class="tip-title">Spot Reducing Belly Fat Is a Myth — But Your Approach Is Right</div>
+    <div class="tip-body">You can't choose WHERE you lose fat first — genetics and hormones determine order. But the belly and love handles ARE typically the last to go for men. Your V-taper program is the correct strategy: build wide shoulders + back while shrinking the waist via calorie deficit. Stay consistent — the shape emerges over months, not weeks. The scoliosis means your visual symmetry will keep improving as both the fat loss AND your unilateral training work together.</div>
+  </div>
+
+  <div style="height:20px;"></div>
+
+</div>
+
+<script>
+// ─── SCREEN NAV ───
+function showScreen(id, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── DAY SWITCHER ───
+function showDay(day, tabEl) {
+  document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.day-tab').forEach(t => t.className = 'day-tab');
+  document.getElementById('day-' + day).classList.add('active');
+  tabEl.classList.add('act-' + day);
+  updateProgress();
+}
+
+// ─── TOGGLE EXERCISE ───
+function toggleEx(card) {
+  const wasOpen = card.classList.contains('open');
+  card.classList.toggle('open');
+  if (!wasOpen) {
+    const loggerEl = card.querySelector('.logger');
+    if (loggerEl && loggerEl.children.length === 0) buildLogger(loggerEl);
+  }
+}
+
+// ─── BUILD SET LOGGER ───
+function buildLogger(el) {
+  const n = parseInt(el.dataset.sets) || 3;
+  const head = document.createElement('div');
+  head.className = 'logger-head';
+  head.innerHTML = '<span class="lh-set">Set</span><span class="lh-weight">Weight (lbs)</span><span class="lh-reps">Reps</span><span class="lh-done"></span>';
+  el.appendChild(head);
+
+  for (let i = 1; i <= n; i++) {
+    const row = document.createElement('div');
+    row.className = 'set-row';
+    row.innerHTML = `
+      <div class="set-num">${i}</div>
+      <input class="set-input" type="number" inputmode="decimal" placeholder="lbs" />
+      <input class="set-input" type="number" inputmode="numeric" placeholder="reps" />
+      <button class="set-check" onclick="toggleCheck(this)">✓</button>
+    `;
+    el.appendChild(row);
+  }
+}
+
+function toggleCheck(btn) {
+  btn.classList.toggle('done');
+  updateProgress();
+  updateTotalDone();
+}
+
+// ─── PROGRESS ───
+function updateProgress() {
+  const activePanelId = document.querySelector('.day-panel.active')?.id;
+  if (!activePanelId) return;
+  const panel = document.getElementById(activePanelId);
+  const total = panel.querySelectorAll('.set-check').length;
+  const done = panel.querySelectorAll('.set-check.done').length;
+  const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-txt').textContent = done + ' / ' + total + ' sets';
+}
+
+function updateTotalDone() {
+  const done = document.querySelectorAll('.set-check.done').length;
+  document.getElementById('total-done').textContent = done;
+}
+
+// ─── WEIGHT LOG ───
+let weights = JSON.parse(localStorage.getItem('vtaper-weights') || '[]');
+
+function logWeight() {
+  const input = document.getElementById('w-input');
+  const val = parseFloat(input.value);
+  if (!val || val < 100 || val > 400) return;
+  weights.push({ date: new Date().toLocaleDateString(), w: val });
+  if (weights.length > 12) weights = weights.slice(-12);
+  localStorage.setItem('vtaper-weights', JSON.stringify(weights));
+  input.value = '';
+  renderWeights();
+}
+
+function renderWeights() {
+  if (weights.length === 0) return;
+  const latest = weights[weights.length - 1].w;
+  const start = 198;
+  const lost = Math.max(0, start - latest).toFixed(1);
+
+  document.getElementById('cw-display').textContent = latest;
+  document.getElementById('curr-w-stat').textContent = latest;
+  document.getElementById('lost-stat').textContent = lost;
+
+  const empty = document.getElementById('chart-empty');
+  const canvas = document.getElementById('weightChart');
+
+  if (weights.length < 2) {
+    empty.textContent = 'Add more weigh-ins to see your trend';
+    canvas.style.display = 'none';
+    return;
+  }
+
+  empty.style.display = 'none';
+  canvas.style.display = 'block';
+  drawChart(canvas, weights);
+}
+
+function drawChart(canvas, data) {
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.offsetWidth || 300;
+  const H = 80;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const vals = data.map(d => d.w);
+  const minV = Math.min(...vals) - 2;
+  const maxV = Math.max(...vals) + 2;
+  const pad = { l: 8, r: 8, t: 8, b: 8 };
+  const w = W - pad.l - pad.r;
+  const h = H - pad.t - pad.b;
+
+  const px = (i) => pad.l + (i / (data.length - 1)) * w;
+  const py = (v) => pad.t + h - ((v - minV) / (maxV - minV)) * h;
+
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, pad.t, 0, H - pad.b);
+  grad.addColorStop(0, 'rgba(0,230,118,0.25)');
+  grad.addColorStop(1, 'rgba(0,230,118,0)');
+
+  ctx.beginPath();
+  ctx.moveTo(px(0), py(vals[0]));
+  for (let i = 1; i < vals.length; i++) ctx.lineTo(px(i), py(vals[i]));
+  ctx.lineTo(px(vals.length - 1), H);
+  ctx.lineTo(px(0), H);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = '#00e676';
+  ctx.lineWidth = 2;
+  ctx.lineJoin = 'round';
+  ctx.moveTo(px(0), py(vals[0]));
+  for (let i = 1; i < vals.length; i++) ctx.lineTo(px(i), py(vals[i]));
+  ctx.stroke();
+
+  // Dots
+  vals.forEach((v, i) => {
+    ctx.beginPath();
+    ctx.arc(px(i), py(v), 3, 0, Math.PI * 2);
+    ctx.fillStyle = '#00e676';
+    ctx.fill();
+  });
+}
+
+// ─── INIT ───
+renderWeights();
+</script>
+
+</body>
+</html>
